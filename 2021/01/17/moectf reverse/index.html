@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>moectf2020 reverse writeup | InnerSpace-含树 的博客</title><meta name="keywords" content="ctf,wp,re,moectf"><meta name="author" content="含树"><meta name="copyright" content="含树"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="moectf做题记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="moectf2020 reverse writeup">
+<meta property="og:url" content="https://innerspace-hs.github.io/2021/01/17/moectf%20reverse/index.html">
+<meta property="og:site_name" content="InnerSpace-含树 的博客">
+<meta property="og:description" content="moectf做题记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/03/BzRreAwcFmnoEUS.jpg">
+<meta property="article:published_time" content="2021-01-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-03T12:27:58.621Z">
+<meta property="article:author" content="含树">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="wp">
+<meta property="article:tag" content="re">
+<meta property="article:tag" content="moectf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/03/BzRreAwcFmnoEUS.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/02/03/FB8GCYr5dV1Q72T.png"><link rel="canonical" href="https://innerspace-hs.github.io/2021/01/17/moectf%20reverse/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 含树","link":"链接: ","source":"来源: InnerSpace-含树 的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-03 20:27:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><link rel="stylesheet" href="//at.alicdn.com/t/font_2186830_goo1c4ki1yu.css"><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/02/03/FB8GCYr5dV1Q72T.png" onerror="onerror=null;src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/02/03/BzRreAwcFmnoEUS.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">InnerSpace-含树 的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 小伙伴</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">moectf2020 reverse writeup</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-16T16:00:00.000Z" title="发表于 2021-01-17 00:00:00">2021-01-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-02-03T12:27:58.621Z" title="更新于 2021-02-03 20:27:58">2021-02-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ctf%E5%AD%A6%E4%B9%A0/">ctf学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">902</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>Rxencode</h1>
+<p><img src="https://i.loli.net/2021/01/13/AEWPKbMgTZu4eGi.png" alt="image.png"></p>
+<p>自动定位主函数，36行是对s1与s2字符串比较，可知s1==s2，且flag长度应为32</p>
+<p>进入Rxencode函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *__fastcall <span class="title">RxEncode</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *a1, <span class="keyword">int</span> a2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">void</span> *result; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">int</span> v3; <span class="comment">// [rsp+18h] [rbp-38h]</span></span><br><span class="line">  <span class="keyword">int</span> v4; <span class="comment">// [rsp+1Ch] [rbp-34h]</span></span><br><span class="line">  <span class="keyword">int</span> v5; <span class="comment">// [rsp+20h] [rbp-30h]</span></span><br><span class="line">  <span class="keyword">int</span> v6; <span class="comment">// [rsp+24h] [rbp-2Ch]</span></span><br><span class="line">  <span class="keyword">int</span> v7; <span class="comment">// [rsp+28h] [rbp-28h]</span></span><br><span class="line">  <span class="keyword">int</span> v8; <span class="comment">// [rsp+28h] [rbp-28h]</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [rsp+2Ch] [rbp-24h]</span></span><br><span class="line">  _BYTE *v10; <span class="comment">// [rsp+30h] [rbp-20h]</span></span><br><span class="line">  <span class="keyword">void</span> *s; <span class="comment">// [rsp+38h] [rbp-18h]</span></span><br><span class="line"></span><br><span class="line">  v3 = <span class="number">3</span> * (a2 / <span class="number">4</span>);</span><br><span class="line">  v4 = <span class="number">0</span>;</span><br><span class="line">  v5 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> ( a1[a2 - <span class="number">1</span>] == <span class="number">61</span> )</span><br><span class="line">    v4 = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> ( a1[a2 - <span class="number">2</span>] == <span class="number">61</span> )</span><br><span class="line">    ++v4;</span><br><span class="line">  <span class="keyword">if</span> ( a1[a2 - <span class="number">3</span>] == <span class="number">61</span> )</span><br><span class="line">    ++v4;</span><br><span class="line">  <span class="keyword">if</span> ( v4 == <span class="number">3</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v3 += <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( v4 &lt;= <span class="number">3</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v4 == <span class="number">2</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      v3 += <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ( v4 )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( v4 == <span class="number">1</span> )</span><br><span class="line">        v3 += <span class="number">4</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      v3 += <span class="number">4</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  s = <span class="built_in">malloc</span>(v3);</span><br><span class="line">  <span class="keyword">if</span> ( s )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">memset</span>(s, <span class="number">0</span>, v3);</span><br><span class="line">    v10 = s;</span><br><span class="line">    <span class="keyword">while</span> ( v5 &lt; a2 - v4 )</span><br><span class="line">    &#123;</span><br><span class="line">      v6 = <span class="number">0</span>;</span><br><span class="line">      v7 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">while</span> ( v6 &lt;= <span class="number">3</span> &amp;&amp; v5 &lt; a2 - v4 )</span><br><span class="line">      &#123;</span><br><span class="line">        v7 = (v7 &lt;&lt; <span class="number">6</span>) | (<span class="keyword">char</span>)find_pos(a1[v5]);</span><br><span class="line">        ++v6;</span><br><span class="line">        ++v5;</span><br><span class="line">      &#125;</span><br><span class="line">      v8 = v7 &lt;&lt; (<span class="number">6</span> * (<span class="number">4</span> - v6));</span><br><span class="line">      <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">2</span> &amp;&amp; i != v6; ++i )</span><br><span class="line">        *v10++ = v8 &gt;&gt; (<span class="number">8</span> * (<span class="number">2</span> - i));</span><br><span class="line">    &#125;</span><br><span class="line">    *v10 = <span class="number">0</span>;</span><br><span class="line">    result = s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;No enough memory.&quot;</span>);</span><br><span class="line">    result = <span class="number">0LL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现这样一大堆东西</p>
+<p>进入find_pos函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">find_pos</span><span class="params">(<span class="keyword">char</span> a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">strrchr</span>(<span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234&#123;&#125;789+/=&quot;</span>, a1)</span><br><span class="line">       - <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234&#123;&#125;789+/=&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>猜测是换表base64</p>
+<p>扣s2在hex表中扣出</p>
+<p><img src="https://i.loli.net/2021/01/13/uK4Mt6m9DeLynq1.png" alt="image.png"></p>
+<p>编写解密脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">flag_enc = <span class="string">b&#x27;\x9A\x87\x9C\xB5\xFE\x58\xD1\x4A\xFE\x0B\xED\x6C\xFA\xFD\xEB\xCB\xE8\x34\xA3\x43\x8E\xA3\x47\x7A&#x27;</span></span><br><span class="line"></span><br><span class="line">flag_fake = base64.b64encode(flag_enc)</span><br><span class="line"></span><br><span class="line">string1 = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234&#123;&#125;789+/&quot;</span></span><br><span class="line">string2 = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span></span><br><span class="line"></span><br><span class="line">table = <span class="built_in">str</span>.maketrans(string2,string1)</span><br><span class="line"><span class="built_in">str</span>=<span class="built_in">bytes</span>.decode(flag_fake)</span><br><span class="line"></span><br><span class="line">print(<span class="built_in">str</span>.translate(table))</span><br><span class="line"></span><br><span class="line"><span class="comment"># print moectf&#123;Y0Ur+C+1s+v3ry+g0o0OOo0d&#125;</span></span><br></pre></td></tr></table></figure>
+<p>flag_get!</p>
+<p>顺便学了学python写base64换表加解密</p>
+<h1>EasyJava</h1>
+<p>Java逆向，拖进jd-jui，得到java代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EasyJava</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] paramArrayOfString)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;MoeCTF 2020 EasyJava --by Reverier&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;Input your flag and I will check it:&quot;</span>);</span><br><span class="line">    BufferedReader bufferedReader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">    String str = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span>[] arrayOfInt = &#123; </span><br><span class="line">        <span class="number">43</span>, <span class="number">23</span>, <span class="number">23</span>, <span class="number">62</span>, <span class="number">110</span>, <span class="number">66</span>, <span class="number">94</span>, <span class="number">99</span>, <span class="number">126</span>, <span class="number">68</span>, </span><br><span class="line">        <span class="number">43</span>, <span class="number">62</span>, <span class="number">76</span>, <span class="number">110</span>, <span class="number">22</span>, <span class="number">5</span>, <span class="number">15</span>, <span class="number">111</span>, <span class="number">86</span>, <span class="number">75</span>, </span><br><span class="line">        <span class="number">78</span>, <span class="number">83</span>, <span class="number">86</span>, <span class="number">0</span>, <span class="number">85</span>, <span class="number">86</span> &#125;;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      str = bufferedReader.readLine();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception exception) &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;ERROR: Undefined Exception.&quot;</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span> (str.isEmpty()) &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;Nothing received.&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (str.length() != <span class="number">35</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Rua~~~Wrong!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125; </span><br><span class="line">      String str1 = str.substring(<span class="number">0</span>, <span class="number">7</span>);</span><br><span class="line">      <span class="keyword">if</span> (!str1.equals(<span class="string">&quot;moectf&#123;&quot;</span>)) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Rua~~~Wrong!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125; </span><br><span class="line">      String str2 = str.substring(<span class="number">7</span>, str.length() - <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">byte</span> b = <span class="number">0</span>; b &lt; str2.length() - <span class="number">1</span>; b++) &#123;</span><br><span class="line">        <span class="keyword">char</span> c1 = str2.charAt(b);</span><br><span class="line">        <span class="keyword">char</span> c2 = str2.charAt(b + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span> i = c1 ^ c2;</span><br><span class="line">        <span class="keyword">if</span> (i != arrayOfInt[b]) &#123;</span><br><span class="line">          System.out.println(<span class="string">&quot;Rua~~~Wrong!&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125; </span><br><span class="line">      &#125; </span><br><span class="line">      System.out.println(<span class="string">&quot;Congratulations!&quot;</span>);</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>主要代码位于31-38行</p>
+<p>程序逻辑大概是，讲flag中的每一位与下一位异或，得到arrayOfInt，然而flag花括号中的字符又27个，arrayOfInt中只有26个数据，于是逆向解法应该是行不通了，于是选择爆破，找到爆破结果中有意义的字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">43</span>,<span class="number">23</span>,<span class="number">23</span>,<span class="number">62</span>,<span class="number">110</span>,<span class="number">66</span>,<span class="number">94</span>,<span class="number">99</span>,<span class="number">126</span>,<span class="number">68</span>,<span class="number">43</span>,<span class="number">62</span>,<span class="number">76</span>,<span class="number">110</span>,<span class="number">22</span>,<span class="number">5</span>,<span class="number">15</span>,<span class="number">111</span>,<span class="number">86</span>,<span class="number">75</span>,<span class="number">78</span>,<span class="number">83</span>,<span class="number">86</span>,<span class="number">0</span>,<span class="number">85</span>,<span class="number">86</span>]</span><br><span class="line">flag=[a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a]</span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>,<span class="number">127</span>):</span><br><span class="line">    flag[<span class="number">0</span>]=<span class="built_in">chr</span>(n);</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span> (<span class="number">0</span>,<span class="number">26</span>):</span><br><span class="line">        flag[i+<span class="number">1</span>]=<span class="built_in">chr</span>(<span class="built_in">ord</span>(flag[i])^a[i])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">        print(i,end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">    print(<span class="string">&quot;\n&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>在爆破结果中找到这么一句</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">EnynP&gt;|&quot;A?&#123;Pn&quot;LZ_P?i&quot;l?ii&lt;j</span><br><span class="line"></span><br><span class="line">FmzmS&#x3D;!B&lt;xSm!OY\S&lt;j!o&lt;jj?i</span><br><span class="line"></span><br><span class="line">Gl&#123;lR&lt;~ C&#x3D;yRl NX]R&#x3D;k n&#x3D;kk&gt;h</span><br><span class="line"></span><br><span class="line">Hctc]3q&#x2F;L2v]c&#x2F;AWR]2d&#x2F;a2dd1g</span><br><span class="line"></span><br><span class="line">Ibub\2p.M3w\b.@VS\3e.&#96;3ee0f</span><br><span class="line"></span><br><span class="line">Java_1s-N0t_a-CUP_0f-c0ff3e</span><br><span class="line"></span><br><span class="line">K&#96;w&#96;^0r,O1u^&#96;,BTQ^1g,b1gg2d</span><br><span class="line"></span><br><span class="line">LgpgY7u+H6rYg+ESVY6&#96;+e6&#96;&#96;5c</span><br><span class="line"></span><br><span class="line">MfqfX6t*I7sXf*DRWX7a*d7aa4b</span><br><span class="line"></span><br><span class="line">Nere[5w)J4p[e)GQT[4b)g4bb7a</span><br><span class="line"></span><br><span class="line">OdsdZ4v(K5qZd(FPUZ5c(f5cc6&#96;</span><br></pre></td></tr></table></figure>
+<p><code>Java_1s-N0t_a-CUP_0f-c0ff3e</code></p>
+<p>得到flag：<code>moectf&#123;Java_1s-N0t_a-CUP_0f-c0ff3e&#125;</code></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">含树</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://innerspace-hs.github.io/2021/01/17/moectf%20reverse/">https://innerspace-hs.github.io/2021/01/17/moectf reverse/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://innerspace-hs.github.io" target="_blank">InnerSpace-含树 的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ctf/">ctf</a><a class="post-meta__tags" href="/tags/wp/">wp</a><a class="post-meta__tags" href="/tags/re/">re</a><a class="post-meta__tags" href="/tags/moectf/">moectf</a></div><div class="post_share"></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://i.loli.net/2021/02/03/2jbOJ3urqm97QsG.png" target="_blank"><img class="post-qr-code-img" src="https://i.loli.net/2021/02/03/2jbOJ3urqm97QsG.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://i.loli.net/2021/02/03/H4qEWBwyeV1aNUk.jpg" target="_blank"><img class="post-qr-code-img" src="https://i.loli.net/2021/02/03/H4qEWBwyeV1aNUk.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/17/c/"><img class="prev-cover" src="https://i.loli.net/2021/02/03/D7RLhbgVi4s1SO2.jpg" onerror="onerror=null;src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">怎么用scanf输入带空格的字符串</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/17/%E6%8D%A2%E8%A1%A8base64/"><img class="next-cover" src="https://i.loli.net/2021/02/03/jpIhSEgLUiBkuO3.jpg" onerror="onerror=null;src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">换表base64加解密</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/01/20/bbs_first week/" title="rxyyds_first_week"><img class="cover" src="https://i.loli.net/2021/02/03/tGuBThWno1KUCbZ.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-20</div><div class="title">rxyyds_first_week</div></div></a></div><div><a href="/2021/01/23/bbs_fourth week/" title="rxyyds_fourth_week"><img class="cover" src="https://i.loli.net/2021/02/03/z7CDJbjN52fua8W.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-23</div><div class="title">rxyyds_fourth_week</div></div></a></div><div><a href="/2021/01/23/djbctf2021re/" title="djbctf2021-re第一题A-Maze-In	writeup"><img class="cover" src="https://i.loli.net/2021/02/03/qRZ8CKyIVieLbwr.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-23</div><div class="title">djbctf2021-re第一题A-Maze-In	writeup</div></div></a></div><div><a href="/2021/02/11/wekk6/" title="rxyyds_week6"><img class="cover" src="https://i.loli.net/2021/02/11/9PmLKopkDhEQNZw.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-11</div><div class="title">rxyyds_week6</div></div></a></div><div><a href="/2021/01/17/buuctf misc/" title="buuctf misc writeup"><img class="cover" src="https://i.loli.net/2021/02/03/7XkFboj12KzJrPB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-17</div><div class="title">buuctf misc writeup</div></div></a></div><div><a href="/2021/01/18/swupctf_misc_套娃/" title="swupctf2020 misc 套娃"><img class="cover" src="https://i.loli.net/2021/02/03/vQ6OfPVqWMpa5eD.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-18</div><div class="title">swupctf2020 misc 套娃</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://i.loli.net/2021/02/03/FB8GCYr5dV1Q72T.png" onerror="this.onerror=null;this.src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="avatar"/><div class="author-info__name">含树</div><div class="author-info__description">一群大佬中的一只彩笔，每天努力学习追赶大佬</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/innerspace-hs"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/innerspace-hs" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="tencent://QQInterLive/?Cmd=2&amp;Uin=1239686288" target="_blank" title="QQ-PC"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:insp.zcr@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=ZTeZoypLMkCR7l7SCaZkjKnedA85vvyh&amp;noverify=0" target="_blank" title="QQ-phone"><i class="iconfont icon-phone"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog !</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Rxencode</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">EasyJava</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/02/11/wekk6/" title="rxyyds_week6"><img src="https://i.loli.net/2021/02/11/9PmLKopkDhEQNZw.jpg" onerror="this.onerror=null;this.src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="rxyyds_week6"/></a><div class="content"><a class="title" href="/2021/02/11/wekk6/" title="rxyyds_week6">rxyyds_week6</a><time datetime="2021-02-10T18:06:28.000Z" title="发表于 2021-02-11 02:06:28">2021-02-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/29/%E5%86%85%E5%BF%83%E4%B8%96%E7%95%8C/" title="内心世界__数年来不愿说出的话——全在这里"><img src="https://i.loli.net/2021/02/03/sE93VlXd54DWvZH.jpg" onerror="this.onerror=null;this.src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="内心世界__数年来不愿说出的话——全在这里"/></a><div class="content"><a class="title" href="/2021/01/29/%E5%86%85%E5%BF%83%E4%B8%96%E7%95%8C/" title="内心世界__数年来不愿说出的话——全在这里">内心世界__数年来不愿说出的话——全在这里</a><time datetime="2021-01-29T04:15:08.000Z" title="发表于 2021-01-29 12:15:08">2021-01-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/23/bbs_fourth%20week/" title="rxyyds_fourth_week"><img src="https://i.loli.net/2021/02/03/z7CDJbjN52fua8W.jpg" onerror="this.onerror=null;this.src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="rxyyds_fourth_week"/></a><div class="content"><a class="title" href="/2021/01/23/bbs_fourth%20week/" title="rxyyds_fourth_week">rxyyds_fourth_week</a><time datetime="2021-01-23T15:35:28.000Z" title="发表于 2021-01-23 23:35:28">2021-01-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/23/djbctf2021re/" title="djbctf2021-re第一题A-Maze-In	writeup"><img src="https://i.loli.net/2021/02/03/qRZ8CKyIVieLbwr.jpg" onerror="this.onerror=null;this.src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="djbctf2021-re第一题A-Maze-In	writeup"/></a><div class="content"><a class="title" href="/2021/01/23/djbctf2021re/" title="djbctf2021-re第一题A-Maze-In	writeup">djbctf2021-re第一题A-Maze-In	writeup</a><time datetime="2021-01-23T15:27:48.000Z" title="发表于 2021-01-23 23:27:48">2021-01-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/20/bbs_first%20week/" title="rxyyds_first_week"><img src="https://i.loli.net/2021/02/03/tGuBThWno1KUCbZ.jpg" onerror="this.onerror=null;this.src='https://i.loli.net/2021/02/03/gE7a8wK6rVB4Gts.jpg'" alt="rxyyds_first_week"/></a><div class="content"><a class="title" href="/2021/01/20/bbs_first%20week/" title="rxyyds_first_week">rxyyds_first_week</a><time datetime="2021-01-19T16:00:00.000Z" title="发表于 2021-01-20 00:00:00">2021-01-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/02/03/XTwldOiS73EcZVI.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 含树</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">你好啊！小伙伴！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="./node_modules/pjax/pjax.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="C,Python,Java,C++,PHP,JavaScript,Assembly,CSharp,Lua,Golang,kotlin,Lisp" data-fontsize="20px" data-random="true" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
