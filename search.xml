@@ -199,6 +199,33 @@
     
     
     <entry>
+      <title>怎么用scanf输入带空格的字符串</title>
+      <link href="2021/01/17/c/"/>
+      <url>2021/01/17/c/</url>
+      
+        <content type="html"><![CDATA[<h1>怎么用scanf输入带空格的字符串</h1><p>如果直接用这样输入</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">100</span>];</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,a);</span><br></pre></td></tr></table></figure><p><img src="https://i.loli.net/2020/12/10/TVW1eAcEMZlLxPX.png" alt="image.png"></p><p>会发现遇到空格会停止输入</p><p>然而车钥匙神教了我这个方法</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">100</span>];</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%[^\n]&quot;</span>,a);</span><br></pre></td></tr></table></figure><p><img src="https://i.loli.net/2020/12/10/g4aSJYLdlRD7qEj.png" alt="image.png"></p><p>这样做之后，字符间的空格可以成功输入，而且可以遇到<code>\n</code>停止输入</p><p>除此之外车钥匙神又讲了更有趣的东西</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%[^\n]%*c&quot;</span>,a);</span><br></pre></td></tr></table></figure><p>这样做可以将最后一个输入字符的下一个字符移出缓冲区</p><p><img src="https://i.loli.net/2020/12/10/OfB2dZNnR8GYck1.png" alt="image.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c </tag>
+            
+            <tag> 编程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>buuctf misc writeup</title>
       <link href="2021/01/17/buuctf%20misc/"/>
       <url>2021/01/17/buuctf%20misc/</url>
@@ -222,33 +249,6 @@
             <tag> buuctf </tag>
             
             <tag> misc </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>怎么用scanf输入带空格的字符串</title>
-      <link href="2021/01/17/c/"/>
-      <url>2021/01/17/c/</url>
-      
-        <content type="html"><![CDATA[<h1>怎么用scanf输入带空格的字符串</h1><p>如果直接用这样输入</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">100</span>];</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,a);</span><br></pre></td></tr></table></figure><p><img src="https://i.loli.net/2020/12/10/TVW1eAcEMZlLxPX.png" alt="image.png"></p><p>会发现遇到空格会停止输入</p><p>然而车钥匙神教了我这个方法</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a[<span class="number">100</span>];</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%[^\n]&quot;</span>,a);</span><br></pre></td></tr></table></figure><p><img src="https://i.loli.net/2020/12/10/g4aSJYLdlRD7qEj.png" alt="image.png"></p><p>这样做之后，字符间的空格可以成功输入，而且可以遇到<code>\n</code>停止输入</p><p>除此之外车钥匙神又讲了更有趣的东西</p><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%[^\n]%*c&quot;</span>,a);</span><br></pre></td></tr></table></figure><p>这样做可以将最后一个输入字符的下一个字符移出缓冲区</p><p><img src="https://i.loli.net/2020/12/10/OfB2dZNnR8GYck1.png" alt="image.png"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 编程学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> c </tag>
-            
-            <tag> 编程 </tag>
             
         </tags>
       
